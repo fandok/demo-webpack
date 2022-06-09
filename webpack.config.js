@@ -13,7 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },
-  plugins: [new HtmlWebpackPlugin(), new MiniCssExtractPlugin()],
+  plugins: [new HtmlWebpackPlugin({template:'./public/index.html'}), new MiniCssExtractPlugin()],
   module: {
     rules: [
       {
@@ -27,12 +27,17 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["@babel/preset-env", "@babel/preset-react"],
+            plugins: [
+              "@babel/plugin-syntax-dynamic-import",
+              "@babel/plugin-proposal-class-properties"
+            ],
           },
         },
       },
     ],
   },
   optimization: {
+    moduleIds: 'deterministic',
     runtimeChunk: "single",
     minimizer: [new CssMinimizerPlugin()],
     splitChunks: {
